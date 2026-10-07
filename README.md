@@ -4,7 +4,7 @@ Scripts de extracción y análisis del artículo:
 
 > Álvaro Hontanar y Sánchez-Núñez. ¿Cuántas emisiones de CO₂ generan los sitios web de las bibliotecas universitarias españolas? La huella de carbono digital, nuevo reto para la biblioteca verde. 
 
-El estudio estima las emisiones de CO₂ por visita de las páginas principales de los sitios web de 52 bibliotecas universitarias de REBIUN mediante el Sustainable Web Design Model (SWDM v4), y analiza su relación con variables organizativas y técnicas.
+El estudio estima las emisiones de CO₂ por visita de la página principal de cada biblioteca mediante el Sustainable Web Design Model (SWDM v4), a través de Website Carbon™ Calculator v4, proyecta sus emisiones anuales a partir del tráfico web registrado en 2024 y analiza su relación con variables institucionales (titularidad, plantilla, comunidad de usuarios y gasto) y técnicas (rendimiento y peso de la página).
 
 ## Contenido del repositorio
 
@@ -26,17 +26,17 @@ Para ejecutar el análisis, descargue el archivo `` y colóquelo en la carpeta `
 
 ## Requisitos
 
-- R (versión [X.X.X])
-- RStudio (opcional, versión [X.X.X])
+- R (versión 4.5.2)
+- RStudio (opcional, versión v. 2026.01.0+392)
 - Paquetes de R:
 
 | Paquete   | Versión   |
 |-----------|-----------|
-| readxl    | [X.X.X]   |
-| dplyr     | [X.X.X]   |
-| ggplot2   | [X.X.X]   |
-| scales    | [X.X.X]   |
-| patchwork | [X.X.X]   |
+| readxl    | 1.4.5   |
+| dplyr     | 1.1.4   |
+| ggplot2   | 4.0.2   |
+| scales    | 1.4.0   |
+| patchwork | 1.3.2   |
 
 Los paquetes pueden instalarse con:
 
