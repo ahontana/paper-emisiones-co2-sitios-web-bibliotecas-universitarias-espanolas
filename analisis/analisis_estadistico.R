@@ -5,7 +5,8 @@ library(scales)
 library(patchwork)
 
 #CARGA DEL DATASET
-df <- read_excel("rebiun_v2.xlsx")
+df <- read.csv2("emisiones-co2-sitios-web-bibliotecas-universitarias-espanolas.csv",
+                fileEncoding = "latin1", check.names = FALSE)
 
 #CREAR COLUMNA CON LAS EMISIONES TOTALES ESTIMADAS DE CADA SITIO WEB (kg)
 df$`Emisiones totales kg` <- df$`Emisiones de CO2` * df$`Visitas al sitio web de la biblioteca` / 1000
@@ -336,38 +337,6 @@ cor.test(df_sin_leon$`Coste total del personal especializado`, df_sin_leon$`Emis
 
 #SPEARMAN
 cor.test(df$`Coste total del personal especializado`, df$`Emisiones de CO2`, method = "spearman", exact = FALSE)
-
-#FIGURA (SI ENTRA) - COSTE PERSONAL ESPECIALIZADO VS EMISIONES
-figura_coste_especializado <- ggplot(df, aes(x = `Coste total del personal especializado`, y = `Emisiones de CO2`)) +
-
-  geom_point(color = "#001489", size = 3, alpha = 0.7) +
-
-  geom_text(
-    data = df %>% filter(`Biblioteca universitaria` == "Universidad de León"),
-    aes(label = `Biblioteca universitaria`),
-    hjust = 1.1,
-    size = 3.5
-  ) +
-
-  scale_x_continuous(
-    labels = number_format(scale = 1e-6, suffix = " M€", accuracy = 0.1, decimal.mark = ",")
-  ) +
-
-  labs(
-    title = "Relación entre el coste del personal especializado y las\nemisiones de CO₂",
-    x = "Coste total del personal especializado",
-    y = "Emisiones de CO₂ (g por visita)"
-  ) +
-
-  theme_minimal(base_size = 13) +
-  theme(
-    plot.title = element_text(face = "bold", hjust = 0),
-    axis.title = element_text(face = "bold")
-  )
-
-figura_coste_especializado
-ggsave("figura_coste_especializado.jpg", plot = figura_coste_especializado, width = 7, height = 5, dpi = 300)
-
 
 ##########################
 # 3.4. FACTORES TÉCNICOS #
