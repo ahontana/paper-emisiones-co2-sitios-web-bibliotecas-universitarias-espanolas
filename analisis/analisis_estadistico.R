@@ -16,18 +16,19 @@ df$`Emisiones totales kg` <- df$`Emisiones de CO2` * df$`Visitas al sitio web de
 ########################################################
 
 #ESTADÍSTICOS DESCRIPTIVOS DE LA VARIABLE EMISIONES DE CO2
+nrow(df)
 summary(df$`Emisiones de CO2`)
 sd(df$`Emisiones de CO2`)
 IQR(df$`Emisiones de CO2`)
-nrow(df)
 mean(df$`Emisiones de CO2` < 1) * 100
 
+#VALORES ATÍPICOS DE LA VARIABLE EMISIONES DE CO2
 outliers <- boxplot.stats(df$`Emisiones de CO2`)$out
 df[df$`Emisiones de CO2` %in% outliers, c("Biblioteca universitaria", "Emisiones de CO2")]
 
 #FIGURA 1 - BOXPLOT EMISIONES DE CO2 POR VISITA
 figura1_boxplot_emisiones <- ggplot(df, aes(x = "", y = `Emisiones de CO2`)) +
-
+  
   geom_boxplot(
     fill = "#001489",
     color = "#001489",
@@ -35,13 +36,13 @@ figura1_boxplot_emisiones <- ggplot(df, aes(x = "", y = `Emisiones de CO2`)) +
     width = 0.3,
     outlier.color = "#001489"
   ) +
-
+  
   geom_hline(
     aes(yintercept = 0.359, linetype = "Mediana global (0,359 g)"),
     color = "red",
     linewidth = 1
   ) +
-
+  
   stat_summary(
     fun = mean,
     geom = "point",
@@ -50,25 +51,25 @@ figura1_boxplot_emisiones <- ggplot(df, aes(x = "", y = `Emisiones de CO2`)) +
     stroke = 1.5,
     color = "#001489"
   ) +
-
+  
   coord_flip() +
-
+  
   scale_y_continuous(
     breaks = seq(0, 4, by = 0.5),
     labels = number_format(accuracy = 0.1, decimal.mark = ",")
   ) +
-
+  
   scale_linetype_manual(
     name = "",
     values = c("Mediana global (0,359 g)" = "dashed")
   ) +
-
+  
   labs(
     title = "Distribución de las emisiones de CO₂ por visita",
     x = "Bibliotecas",
     y = "Emisiones de CO₂ (g por visita)"
   ) +
-
+  
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold"),
@@ -90,30 +91,30 @@ calificacion <- df %>%
   mutate(porcentaje = n / sum(n))
 
 figura2_barras_calificacion <- ggplot(calificacion, aes(x = `Calificación de sostenibilidad`, y = porcentaje)) +
-
+  
   geom_col(
     fill = "#001489",
     alpha = 0.9,
     width = 0.7
   ) +
-
+  
   geom_text(
     aes(label = percent(porcentaje, accuracy = 0.1, decimal.mark = ",")),
     vjust = -0.4,
     size = 4
   ) +
-
+  
   scale_y_continuous(
     labels = percent_format(decimal.mark = ","),
     expand = expansion(mult = c(0, 0.1))
   ) +
-
+  
   labs(
     title = "Distribución de la calificación de sostenibilidad",
     x = "Calificación de sostenibilidad",
     y = "Páginas analizadas (%)"
   ) +
-
+  
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", hjust = 0),
@@ -149,24 +150,24 @@ barras_top10 <- top10_total %>%
   ))
 
 figura3_barras_top10_bibliotecas_mas_emisiones <- ggplot(barras_top10, aes(x = `Biblioteca universitaria`, y = `Emisiones totales kg`)) +
-
+  
   geom_col(
     fill = "#001489",
     width = 0.7
   ) +
-
+  
   coord_flip() +
-
+  
   scale_y_continuous(
     labels = number_format(accuracy = 1, big.mark = ".", decimal.mark = ",")
   ) +
-
+  
   labs(
     title = "Top 10 bibliotecas universitarias por emisiones totales de CO₂",
     x = "Bibliotecas",
     y = "Emisiones totales de CO₂ (kg)"
   ) +
-
+  
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", hjust = 0),
@@ -183,7 +184,7 @@ ggsave("figura3.jpg", plot = figura3_barras_top10_bibliotecas_mas_emisiones, wid
 suma_top10 <- sum(top10_total$`Emisiones totales kg`)
 suma_top10 / total_emisiones_rebiun * 100
 
-#TOP 10 DE EMISIONES AGREGADAS QUE ESTÁN EN TOP 10 VISITAS
+#NÚMERO DE TOP 10 DE EMISIONES AGREGADAS QUE ESTÁN EN TOP 10 VISITAS
 sum(top10_total$posicion_visitas <= 10)
 
 #LAS QUE NO ESTÁN EN TOP 10 VISITAS, PERO SI EN TOP 10 EMISIONES AGREGADAS (Navarra, Alcalá y Extremadura)
@@ -197,11 +198,13 @@ top10_total[top10_total$posicion_visitas > 10, ]
 df_publicas <- df %>% filter(Titularidad == "Pública")
 df_privadas <- df %>% filter(Titularidad == "Privada")
 
+#DE UNIVERSIDADES PÚBLICAS
 nrow(df_publicas)
 summary(df_publicas$`Emisiones de CO2`)
 sd(df_publicas$`Emisiones de CO2`)
 IQR(df_publicas$`Emisiones de CO2`)
 
+#Y UNIVERSIDADES PRIVADAS
 nrow(df_privadas)
 summary(df_privadas$`Emisiones de CO2`)
 sd(df_privadas$`Emisiones de CO2`)
@@ -213,7 +216,7 @@ mean(df_privadas$`Emisiones de CO2` > 0.359) * 100
 
 #FIGURA 4 - BOXPLOT DE EMISIONES DE CO2 POR VISITA POR TITULARIDAD
 figura4_boxplot_titularidad <- ggplot(df, aes(x = Titularidad, y = `Emisiones de CO2`)) +
-
+  
   geom_boxplot(
     fill = "#001489",
     color = "#001489",
@@ -221,13 +224,13 @@ figura4_boxplot_titularidad <- ggplot(df, aes(x = Titularidad, y = `Emisiones de
     width = 0.35,
     outlier.color = "#001489"
   ) +
-
+  
   geom_hline(
     aes(yintercept = 0.359, linetype = "Mediana global (0,359 g)"),
     color = "red",
     linewidth = 1
   ) +
-
+  
   stat_summary(
     fun = mean,
     geom = "point",
@@ -236,25 +239,25 @@ figura4_boxplot_titularidad <- ggplot(df, aes(x = Titularidad, y = `Emisiones de
     stroke = 1.5,
     color = "#001489"
   ) +
-
+  
   coord_flip() +
-
+  
   scale_y_continuous(
     breaks = seq(0, 4, by = 0.5),
     labels = number_format(accuracy = 0.1, decimal.mark = ",")
   ) +
-
+  
   scale_linetype_manual(
     name = "",
     values = c("Mediana global (0,359 g)" = "dashed")
   ) +
-
+  
   labs(
     title = "Distribución de las emisiones de CO₂ por titularidad",
     x = "Titularidad",
     y = "Emisiones de CO₂ (g por visita)"
   ) +
-
+  
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold"),
@@ -289,26 +292,26 @@ variables_institucionales <- c(
 
 #FUNCIÓN PARA EL CÁLCULO DE CORRELACIONES
 calcular_correlaciones <- function(df, variable_objetivo, variables_explicativas) {
-
+  
   vars <- df %>%
     select(all_of(c(variable_objetivo, variables_explicativas))) %>%
     mutate(across(everything(), as.numeric))
-
+  
   correlaciones <- sapply(vars[-1], function(x) {
     cor(vars[[variable_objetivo]], x, use = "complete.obs")
   })
-
+  
   p_values <- sapply(vars[-1], function(x) {
     cor.test(vars[[variable_objetivo]], x)$p.value
   })
-
+  
   tabla <- data.frame(
     Variable = names(correlaciones),
     Correlacion = round(correlaciones, 3),
     p_value = round(p_values, 3),
     row.names = NULL
   )
-
+  
   return(tabla)
 }
 
@@ -321,8 +324,9 @@ tabla_cor_emisiones_visita <- calcular_correlaciones(
 tabla_cor_emisiones_visita
 
 #COSTE DEL PERSONAL ESPECIALIZADO - ¿DE DÓNDE SALE EL r = 0,691?
-#BIBLIOTECAS SIN DATO O COSTE 0
+#BIBLIOTECAS SIN GASTOS EN COSTE DE PERSONAL ESPECIALIZADO
 sum(!is.na(df$`Coste total del personal especializado`))
+#BIBLIOTECAS SIN DATOS + BIBLIOTECAS CON GASTO EN PERSONAL ESPECIALIZADO 0
 sum(df$`Coste total del personal especializado` == 0, na.rm = TRUE)
 
 #BIBLIOTECA CON MAYOR COSTE DE PERSONAL ESPECIALIZADO (LEÓN)
@@ -335,7 +339,7 @@ df %>%
 df_sin_leon <- df %>% filter(`Biblioteca universitaria` != "Universidad de León")
 cor.test(df_sin_leon$`Coste total del personal especializado`, df_sin_leon$`Emisiones de CO2`, method = "pearson")
 
-#SPEARMAN
+#SPEARMAN TENIENDO EN CUENTA LEÓN
 cor.test(df$`Coste total del personal especializado`, df$`Emisiones de CO2`, method = "spearman", exact = FALSE)
 
 ##########################
@@ -343,13 +347,14 @@ cor.test(df$`Coste total del personal especializado`, df$`Emisiones de CO2`, met
 ##########################
 
 #CORRELACIÓN EMISIONES POR VISITA - RENDIMIENTO
+#CORRELACION EMISIONES POR VISITA - RENDIMIENTO EN DISPOSITIVOS MOVILES
 cor.test(
   df$`Rendimiento en dispositivos móviles`,
   df$`Emisiones de CO2`,
   use = "complete.obs",
   method = "pearson"
 )
-
+#CORRELACION EMISIONES POR VISITA - RENDIMIENTO EN ORDENADORES
 cor.test(
   df$`Rendimiento en escritorio`,
   df$`Emisiones de CO2`,
@@ -405,13 +410,13 @@ cor.test(
 figura6_peso_emisiones <- ggplot(df, aes(x = `Peso total de la página`, y = `Emisiones de CO2`)) +
   geom_point(color = "#001489", size = 3, alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE, color = "red") +
-
+  
   labs(
     title = "Relación entre el peso total de la página y las\nemisiones de CO₂",
     x = "Peso total de la página (MB)",
     y = "Emisiones de CO₂ (g por visita)"
   ) +
-
+  
   theme_minimal(base_size = 13) +
   theme(
     plot.title = element_text(face = "bold", hjust = 0),
